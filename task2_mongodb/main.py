@@ -1,31 +1,28 @@
 import urllib.parse
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from pymongo.errors import PyMongoError
 
-username = "Valmade"
-raw_password = "Naqxew-koqfe0-ritzer"
-password = urllib.parse.quote_plus(raw_password)
+load_dotenv()
+
+USERNAME = os.getenv("MONGO_USERNAME")
+RAW_PASSWORD = os.getenv("MONGO_PASSWORD")
+CLUSTER_HOST = os.getenv("MONGO_CLUSTER_HOST")
+APP_NAME = os.getenv("MONGO_APP_NAME", "app")
+
+ENCODED_PASSWORD = urllib.parse.quote_plus(RAW_PASSWORD)
 
 MONGO_URI = (
-    f"mongodb+srv://{username}:{password}"
-    "@valmade.sfjxq2v.mongodb.net/?retryWrites=true&w=majority&appName=valmade"
-)
+    f"mongodb+srv://{USERNAME}:{ENCODED_PASSWORD}"
+    f"@{CLUSTER_HOST}/?retryWrites=true&w=majority&appName={APP_NAME}")
 
 DB_NAME = "cats_db"
 COLLECTION_NAME = "cats"
 
 def get_collection():
     client = MongoClient(MONGO_URI, server_api=ServerApi("1"))
-    db = client[DB_NAME]
-    return db[COLLECTION_NAME]
-
-DB_NAME = "cats_db"
-COLLECTION_NAME = "cats"
-
-
-def get_collection():
-    client = MongoClient(MONGO_URI)
     db = client[DB_NAME]
     return db[COLLECTION_NAME]
 

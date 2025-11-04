@@ -1,11 +1,15 @@
 import psycopg2
 from psycopg2 import sql
+import os
+from dotenv import load_dotenv
 
-DB_NAME = "tasks_db"
-DB_USER = "postgres"
-DB_PASSWORD = "postgres"
-DB_HOST = "localhost"
-DB_PORT = "5432"
+load_dotenv()
+
+DB_NAME = os.getenv("DB_NAME", "tasks_db")
+DB_USER = os.getenv("DB_USER", "postgres")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "5432")
 
 create_users_table = """
 CREATE TABLE IF NOT EXISTS users (
